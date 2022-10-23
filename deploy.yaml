@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: red-acre-app
+spec:
+  selector:
+    matchLabels:
+      app: red-acre-app
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: red-acre-app
+    spec:
+      containers:
+      - name: red-acre-api
+        image: ${REPOSITORY_API_TAG}
+        resources:
+          requests:
+             memory: 512Mi
+             cpu: 0.5
+        imagePullPolicy: Always
+
+      - name: red-acre-client
+        image: ${REPOSITORY_CLIENT_TAG}
+        resources:
+          requests:
+             memory: 512Mi
+             cpu: 0.5
+        imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: red-acre-app-svc
+ 
+
+spec:
+  # This defines which pods are going to be represented by this Service
+  # The service becomes a network endpoint for either other services
+  # or maybe external users to connect to (eg browser)
+  selector:
+    app: red-acre-app
+
+  ports:
+    - name: http
+      port: 80
+ 
+
+  type: LoadBalancer

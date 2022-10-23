@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: dockerfile.api
+    image: "${REPOSITORY_API_TAG}"
+  client:
+    build:
+      context: .
+      dockerfile: dockerfile.client
+    image: "${REPOSITORY_CLIENT_TAG}"
+    ports:
+      - "3000:80"

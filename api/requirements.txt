@@ -1,0 +1,6 @@
+Flask
+gunicorn
+psutil
+flask_cors
+api
+app
