@@ -6,8 +6,9 @@ pipeline {
         DOCKERHUB_USERNAME = "frankisinfotech"
         API_NAME           = "react-api"
         CLIENT_NAME        = "react-client"
-        REPOSITORY_API_TAG = "${DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${API_NAME}:${BUILD_ID}"
-        REPOSITORY_CLIENT_TAG = "${DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${CLIENT_NAME}:${BUILD_ID}"
+        V                  = "latest"
+        REPOSITORY_API_TAG = "${DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${API_NAME}:${V}"
+        REPOSITORY_CLIENT_TAG = "${DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${CLIENT_NAME}:${V}"
     }
     
     stages {
@@ -28,8 +29,7 @@ pipeline {
         stage ('Build and Push Image') {
             steps {
                  withDockerRegistry([credentialsId: 'DOCKERHUB_USERNAME', url: ""]) {
-                   sh 'docker build -t ${REPOSITORY_API_TAG} .'
-                   sh 'docker build -t ${REPOSITORY_CLIENT_TAG} .'
+                   sh 'docker-compose build'
                    sh 'docker push ${REPOSITORY_API_TAG}'          
                    sh 'docker push ${REPOSITORY_CLIENT_TAG}'          
             }
